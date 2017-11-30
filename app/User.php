@@ -4,8 +4,6 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Http\Request;
-use Illuminate\Auth\Passwords\CanResetPassword;
 
 
 class User extends Authenticatable
@@ -13,7 +11,11 @@ class User extends Authenticatable
     use Notifiable;
 
     public function interests(){
-        return $this->belongsToMany(Interest::class)->using(UserInterest::class);
+        return $this->belongsToMany(Interest::class, 'interest_user');
+    }
+
+    public function posts(){
+        return $this->hasMany(Post::class);
     }
 
     /**

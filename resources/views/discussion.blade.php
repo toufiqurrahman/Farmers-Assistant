@@ -6,90 +6,172 @@
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
         <div class="row">
             <!-- Contenedor Principal -->
+
             <div class="comments-container">
                 <h1>Discussion Section</h1>
+                <hr>
 
-                <div class="form-group">
-                    <label for="comment">Ask Question</label>
-                    <textarea class="form-control" rows="5" id="comment" placeholder="Ask your question"></textarea>
-                </div>
-                <div style="margin-bottom: 20px">
-                    <button type="button" class="btn btn-success">Post</button>
-                </div>
+                @if(\Illuminate\Support\Facades\Auth::user()->role == 'farmer')
+                    <form class="form-horizontal" method="POST" action="{{ url('/home/question')}}">
+                        {{ csrf_field() }}
 
+                        <div class="form-group{{ $errors->has('question') ? ' has-error' : '' }}">
 
+                            <div class="col-md-12">
+                                <label for="question">Ask Question</label>
+                                <textarea class="form-control" rows="5" id="question" name="question" class="form-control" placeholder="Ask your question" value="{{ old('question') }}" required autofocus></textarea>
+
+                                @if ($errors->has('question'))
+                                    <span class="help-block">
+                                            <strong>{{ $errors->first('question') }}</strong>
+                                        </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-success">
+                                    Post
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                @endif
+
+                @if(\Illuminate\Support\Facades\Auth::user()->role == 'farmer')
                     <ul id="comments-list" class="comments-list">
                         <li>
                             <div class="comment-main-level">
-                                <!-- Avatar -->
 
-                                <!-- Contenedor del Comentario -->
                                 <div class="comment-box">
                                     <div class="comment-head">
-                                        <h6 class="comment-name by-author"><a href="http://creaticode.com/blog">আব্দুর রহিম</a></h6>
+                                        <h6 class="comment-name by-author"><a href="">আব্দুর রহিম</a></h6>
                                         <span>hace 20 minutos</span>
                                     </div>
                                     <div class="comment-content">
                                         আমি একজন ধান চাষি। আমার ক্ষেতে ধানের খোলে প্রথমে গোলাকার ও লম্বাটে ধরণের ধূসর রঙের জলছাপের মতো দাগ পড়ে এবং তা আস্তে আস্তে বড় হয়ে উপরের দিকে সমস্ত খোলে ও পাতায় ছড়িয়ে পড়ে। এখন আমার করণীয় কী?
                                         <br>
-                                        <button type="button" class="btn btn-primary" >Reply</button>
+                                        <div class="form-group">
+                                            <div >
+                                                <button type="submit" class="btn btn-primary">
+                                                    Edit
+                                                </button>
+                                            </div>
+                                        </div>
 
                                     </div>
 
                                 </div>
                             </div>
-                            <!-- Respuestas de los comentarios -->
-                            <ul class="comments-list reply-list">
-                                <li>
-                                    <!-- Avatar --
-                                    <!-- Contenedor del Comentario -->
-                                    <div class="comment-box">
-                                        <div class="comment-head">
-                                            <h6 class="comment-name by-replier"><a href="">রওশন কবীর</a></h6>
-                                            <span>hace 10 minutos</span>
-                                        </div>
-                                        <div class="comment-content">
-                                            জমির পানি শুকিয়ে পরে আবার সেচ দিন। জমিতে সুষম মাত্রায় সার প্রয়োগ করুন।
-                                        </div>
-                                    </div>
-                                </li>
-
-                                <li>
-                                    <!-- Avatar -->
-                                     <!-- Contenedor del Comentario -->
-                                    <div class="comment-box">
-                                        <div class="comment-head">
-                                            <h6 class="comment-name by-replier"><a href="">রওশন কবীর</a></h6>
-                                            <span>hace 10 minutos</span>
-                                        </div>
-                                        <div class="comment-content">
-                                            রোগাক্রান্ত জমির ধান কাঁটার পর বছরে অন্তত একবার নাড়া জমিতে পুড়িয়ে ফেলুন এবং শুধু ধান না করে অন্যান্য ফসলের চাষ করুন।
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
                         </li>
+                    </ul>
+                @elseif(\Illuminate\Support\Facades\Auth::user()->role == 'expert')
+                        <ul id="comments-list" class="comments-list">
+                            <li>
+                                <div class="comment-main-level">
 
-                        <li>
-                            <div class="comment-main-level">
-                                <!-- Avatar -->
-                                <!-- Contenedor del Comentario -->
-                                <div class="comment-box">
-                                    <div class="comment-head">
-                                        <h6 class="comment-name by-author"><a href="http://creaticode.com/blog">আব্দুর রহিম</a></h6>
-                                        <span>hace 10 minutos</span>
+                                    <div class="comment-box">
+                                        <div class="comment-head">
+                                            <h6 class="comment-name by-author"><a href="">আব্দুর রহিম</a></h6>
+                                            <span>hace 20 minutos</span>
+                                        </div>
+                                        <div class="comment-content">
+                                            আমি একজন ধান চাষি। আমার ক্ষেতে ধানের খোলে প্রথমে গোলাকার ও লম্বাটে ধরণের ধূসর রঙের জলছাপের মতো দাগ পড়ে এবং তা আস্তে আস্তে বড় হয়ে উপরের দিকে সমস্ত খোলে ও পাতায় ছড়িয়ে পড়ে। এখন আমার করণীয় কী?
+                                            <br>
+                                            <div class="form-group">
+                                                <div >
+                                                    <button type="submit" class="btn btn-primary">
+                                                        Reply
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
                                     </div>
-                                    <div class="comment-content">
-                                        আপনার গুরুত্বপূর্ণ পরামর্শের জন্য ধন্যবাদ।
-                                        <br>
-                                        <button type="button" class="btn btn-primary" >Reply</button>
+                                </div>
+                            </li>
+                        </ul>
+                @endif
+
+                @if(\Illuminate\Support\Facades\Auth::user()->role == 'expert')
+                    <ul class="comments-list reply-list">
+                        <li>
+                            <div class="comment-box">
+                                <div class="comment-head">
+                                    <h6 class="comment-name by-replier"><a href="">রওশন কবীর</a></h6>
+                                    <span>{{ \Carbon\Carbon::now()->subDays(5)->diffForHumans()}}</span>
+                                </div>
+                                <div class="comment-content">
+                                    জমির পানি শুকিয়ে পরে আবার সেচ দিন। জমিতে সুষম মাত্রায় সার প্রয়োগ করুন।
+                                    <br>
+                                    <div class="form-group">
+                                        <div >
+                                            <button type="submit" class="btn btn-primary">
+                                                Edit
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </li>
                     </ul>
+                    @elseif(\Illuminate\Support\Facades\Auth::user()->role == 'farmer')
+                    <ul class="comments-list reply-list">
+                        <li>
+                            <div class="comment-box">
+                                <div class="comment-head">
+                                    <h6 class="comment-name by-replier"><a href="">রওশন কবীর</a></h6>
+                                    <span>{{ \Carbon\Carbon::now()->subDays(5)->diffForHumans()}}</span>
+                                </div>
+                                <div class="comment-content">
+                                    জমির পানি শুকিয়ে পরে আবার সেচ দিন। জমিতে সুষম মাত্রায় সার প্রয়োগ করুন।
+                                    <br>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                @endif
+
+                                {{--<li>--}}
+                                    {{--<!-- Avatar -->--}}
+                                     {{--<!-- Contenedor del Comentario -->--}}
+                                    {{--<div class="comment-box">--}}
+                                        {{--<div class="comment-head">--}}
+                                            {{--<h6 class="comment-name by-replier"><a href="">রওশন কবীর</a></h6>--}}
+                                            {{--<span>hace 10 minutos</span>--}}
+                                        {{--</div>--}}
+                                        {{--<div class="comment-content">--}}
+                                            {{--রোগাক্রান্ত জমির ধান কাঁটার পর বছরে অন্তত একবার নাড়া জমিতে পুড়িয়ে ফেলুন এবং শুধু ধান না করে অন্যান্য ফসলের চাষ করুন।--}}
+                                        {{--</div>--}}
+                                    {{--</div>--}}
+                                {{--</li>--}}
+                            {{--</ul>--}}
+                        {{--</li>--}}
+
+                        {{--<li>--}}
+                            {{--<div class="comment-main-level">--}}
+                                {{--<!-- Avatar -->--}}
+                                {{--<!-- Contenedor del Comentario -->--}}
+                                {{--<div class="comment-box">--}}
+                                    {{--<div class="comment-head">--}}
+                                        {{--<h6 class="comment-name by-author"><a href="http://creaticode.com/blog">আব্দুর রহিম</a></h6>--}}
+                                        {{--<span>hace 10 minutos</span>--}}
+                                    {{--</div>--}}
+                                    {{--<div class="comment-content">--}}
+                                        {{--আপনার গুরুত্বপূর্ণ পরামর্শের জন্য ধন্যবাদ।--}}
+                                        {{--<br>--}}
+                                        {{--<button type="button" class="btn btn-primary" >Reply</button>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                        {{--</li>--}}
+                    {{--</ul>--}}
+
 
                 </div>
+
         </div>
     </div>
 @endsection

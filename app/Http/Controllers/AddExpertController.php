@@ -4,9 +4,26 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Expert;
+use Illuminate\Support\Facades\Auth;
 
 class AddExpertController extends Controller
 {
+
+    public function index(){
+        if(Auth::user()->role == 'admin')
+            return view('/admin/add_expert');
+        else
+            return view('home');
+    }
+
+    public function showDeleteExpertForm(){
+        if(Auth::user()->role == 'admin')
+            return view('/admin/delete_expert');
+        else
+            return view('home');
+    }
+
+
 
     public function storeUser(Request $request){
 

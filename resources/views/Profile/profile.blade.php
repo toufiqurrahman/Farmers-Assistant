@@ -44,7 +44,7 @@
           			</div>
 
 				  	<div class="button-container-right">
-						<button type="button" class="btn btn-default active"><a href="{{url('/home/profile/edit')}}" style="text-decoration: none">Update</a></button>
+						<a type="button" href="{{url('/home/profile/edit')}}" class="btn btn-default active" style="text-decoration: none">Update</a>
 					</div>
 
           		</div>

@@ -15,7 +15,7 @@
                                     <time class="comment-date"><i class="fa fa-clock-o"></i> {{ \Carbon\Carbon::now('Asia/Dhaka')->toDateString() }}</time><br>
                                     <time class="comment-date"><i class="fa fa-clock-o"></i> {{ \Carbon\Carbon::now('Asia/Dhaka')->toTimeString() }}</time>
                                 </header>
-                                <form class="form-horizontal" method="POST" action="{{ route('register') }}">
+                                <form class="form-horizontal" method="POST" action="{{ url('/home/post') }}">
                                     <div class="comment-post">
                                         {{csrf_field()}}
 
@@ -23,9 +23,9 @@
 
                                             <div>
                                                 <select type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="margin-bottom: 10px;margin-top: 10px;" class="dropdown-menu" name="product" role="menu">
-                                                    <option >Product</option>
-                                                    <option value="paddy">Paddy</option>
-                                                    <option value="wheat">Wheat</option>
+                                                    @foreach(Auth::user()->interests as $item)
+                                                        <option value="{{$item->id}}">{{$item->interest}}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
 

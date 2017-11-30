@@ -41,7 +41,7 @@
                             <img src="/assets/img/logo_navbar.png">
                         </a>
                     @else
-                        <a class="navbar-brand" href="{{url('home')}}">
+                        <a class="navbar-brand" href="{{url('/home')}}">
                             <img src="/assets/img/logo_navbar.png">
                         </a>
                     @endif
@@ -61,9 +61,11 @@
                             <li><a href="{{ route('register') }}">Register</a></li>
                         @else
                             @if(Auth::user()->role=='farmer')
-                                <a href="{{route('home')}}">
 
-                                </a>
+                                {{--<a href="{{route('home')}}">
+
+                                </a>--}}
+
                                 <li class="dropdown">
                                     <a href="{{route('home')}}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                         Task <span class="caret"></span>
@@ -72,7 +74,7 @@
                                     <ul class="dropdown-menu" role="menu">
                                         <li>
                                             <a href="{{url('/home/post')}}">
-                                                Post
+                                                Create Post
                                             </a>
                                         </li>
 
@@ -89,7 +91,7 @@
                                 </li>
 
                                 <li>
-                                    <a href="{{route('home')}}">Message</a>
+                                    <a href="{{url('/home/message')}}">Demand Posts</a>
                                 </li>
 
 
@@ -105,6 +107,19 @@
                                                 Profile
                                             </a>
                                         </li>
+
+                                        <li>
+                                            <a href="{{url('/home/change-password')}}">
+                                                Change Password
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a href="{{url('/home/my-post')}}">
+                                                My Posts
+                                            </a>
+                                        </li>
+
 
                                         <li role="presentation" class="divider"></li>
 
@@ -136,24 +151,15 @@
                                         <ul class="dropdown-menu" role="menu">
                                             <li>
                                                 <a href="{{url('/home/post')}}">
-                                                    Post
+                                                    Create Post
                                                 </a>
                                             </li>
 
-                                            <li>
-                                                <a href="{{url('/home/discussion')}}">
-                                                    Discussion Section
-                                                </a>
-                                            </li>
                                         </ul>
                                     </li>
 
                                     <li>
-                                        <a href="{{url('/home/communication')}}">Communication</a>
-                                    </li>
-
-                                    <li>
-                                        <a href="{{route('home')}}">Message</a>
+                                        <a href="{{url('/home/message')}}">Sale Posts</a>
                                     </li>
 
 
@@ -169,6 +175,19 @@
                                                     Profile
                                                 </a>
                                             </li>
+
+                                            <li>
+                                                <a href="{{url('/home/change-password')}}">
+                                                    Change Password
+                                                </a>
+                                            </li>
+
+                                            <li>
+                                                <a href="{{url('/home/my-post')}}">
+                                                    My Posts
+                                                </a>
+                                            </li>
+
 
                                             <li role="presentation" class="divider"></li>
 
@@ -198,11 +217,6 @@
                                         </a>
 
                                         <ul class="dropdown-menu" role="menu">
-                                            <li>
-                                                <a href="{{url('/home/post')}}">
-                                                    Post
-                                                </a>
-                                            </li>
 
                                             <li>
                                                 <a href="{{url('/home/discussion')}}">
@@ -216,11 +230,6 @@
                                         <a href="{{url('/home/communication')}}">Communication</a>
                                     </li>
 
-                                    <li>
-                                        <a href="{{route('home')}}">Message</a>
-                                    </li>
-
-
                                     <li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                             {{ Auth::user()->name }} <span class="caret"></span>
@@ -231,6 +240,12 @@
                                             <li>
                                                 <a href="{{url('/home/profile')}}">
                                                     Profile
+                                                </a>
+                                            </li>
+
+                                            <li>
+                                                <a href="{{url('/home/change-password')}}">
+                                                    Change Password
                                                 </a>
                                             </li>
 
@@ -277,8 +292,29 @@
                                     </ul>
                                 </li>
 
-
                                 <li class="dropdown">
+                                    <a href="{{route('home')}}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                        Manage Interests <span class="caret"></span>
+                                    </a>
+
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li>
+                                            <a href="{{url('/home/add_interest')}}">
+                                                Add Interest
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a href="{{url('/home/delete_interest')}}">
+                                                Delete Interest
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+
+
+                                    <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                         {{ Auth::user()->name }} <span class="caret"></span>
                                     </a>
@@ -290,6 +326,13 @@
                                                 Profile
                                             </a>
                                         </li>
+
+                                        <li>
+                                            <a href="{{url('/home/change-password')}}">
+                                                Change Password
+                                            </a>
+                                        </li>
+
 
                                         <li role="presentation" class="divider"></li>
 
