@@ -15,7 +15,7 @@ class MessageController extends Controller
             $interests = Auth::user()->interests;
             $result = array();
             foreach ($interests as $interest){
-                $posts = Post::where('interest_id', $interest->id)->get();
+                $posts = Post::where('interest_id', $interest->id)->orderByDesc('updated_at')->get();
                 foreach ($posts as $post){
                     $user = $post->user()->first();
                     if ($user->role == 'farmer'){
@@ -29,7 +29,7 @@ class MessageController extends Controller
             $interests = Auth::user()->interests;
             $result = array();
             foreach ($interests as $interest){
-                $posts = Post::where('interest_id', $interest->id)->get();
+                $posts = Post::where('interest_id', $interest->id)->orderByDesc('updated_at')->get();
                 foreach ($posts as $post){
                     $user = $post->user()->first();
                     if ($user->role == 'trader'){
@@ -50,7 +50,7 @@ class MessageController extends Controller
             $interests = Auth::user()->interests;
             $result = array();
             foreach ($interests as $interest){
-                $posts = Post::where('interest_id', $interest->id)->get();
+                $posts = Post::where('interest_id', $interest->id)->orderByDesc('updated_at')->get();
                 foreach ($posts as $post){
                     $user = $post->user()->first();
                     if ($user->id == Auth::user()->id){
@@ -59,15 +59,13 @@ class MessageController extends Controller
                 }
             }
 
-            $result = ksort($result);
-
-            return view('my_post',['posts' => $result, 'type'=> 'sell', 'Role'=>'by-replier']);
+            return view('my_post',['posts' => $result, 'type'=> 'buy', 'Role'=>'by-replier']);
         }
         elseif (Auth::user()->role == 'farmer'){
             $interests = Auth::user()->interests;
             $result = array();
             foreach ($interests as $interest) {
-                $posts = Post::where('interest_id', $interest->id)->get();
+                $posts = Post::where('interest_id', $interest->id)->orderBy('updated_at')->get();
                 foreach ($posts as $post) {
                     $user = $post->user;
                     if ($user->id == Auth::user()->id) {
@@ -76,7 +74,7 @@ class MessageController extends Controller
                 }
             }
 
-            return view('my_post',['posts' => $result , 'type'=> 'buy', 'Role'=>'by-author']);
+            return view('my_post',['posts' => $result , 'type'=> 'sell', 'Role'=>'by-author']);
         }
 
         else

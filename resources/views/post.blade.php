@@ -20,8 +20,12 @@
                                         {{csrf_field()}}
 
                                         <span class="btn-group">
+                                             <br>
 
                                             <div>
+
+                                                <label for="product" class="control-label">Product:</label>
+                                                <br>
                                                 <select type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="margin-bottom: 10px;margin-top: 10px;" class="dropdown-menu" name="product" role="menu">
                                                     @foreach(Auth::user()->interests as $item)
                                                         <option value="{{$item->id}}">{{$item->interest}}</option>
@@ -30,8 +34,9 @@
                                             </div>
 
                                             <div>
+                                                <label for="amount" class="control-label">Amount(Kg):</label>
+                                                <br>
                                                 <select type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="margin-bottom: 10px" class="dropdown-menu" name="amount" role="menu">
-                                                    <option >Product Amount (Kg)</option>
                                                     <option>5</option>
                                                     <option>10</option>
                                                 </select>
@@ -40,6 +45,7 @@
 
                                             <div class="form-group{{ $errors->has('price') ? ' has-error' : '' }}" style="margin-left: 0px">
 
+                                                    <label for="amount" class="control-label">Price Per Unit(Tk):</label>
                                                     <input id="price" placeholder="Price Per Unit (Tk)" type="price" class="form-control" name="price" value="{{ old('price') }}" required autofocus>
 
                                                     @if ($errors->has('price'))
@@ -47,8 +53,7 @@
                                                             <strong>{{ $errors->first('price') }}</strong>
                                                         </span>
                                                     @endif
-
-                                            </div>
+                                                </div>
 
 
                                         </span>

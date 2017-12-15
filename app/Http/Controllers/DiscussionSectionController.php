@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Question;
+use App\Reply;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 
 class DiscussionSectionController extends Controller
 {
@@ -16,7 +19,7 @@ class DiscussionSectionController extends Controller
             return view('home');
     }
 
-    public function store(Request $request){
+    public function storeQuestion(Request $request){
         $this->validate($request, [
             'question' => 'required|string',
         ]);
@@ -27,7 +30,23 @@ class DiscussionSectionController extends Controller
 
         $question->save();
 
-        return redirect('/home');
+        return redirect(route('showQuestion'));
+
+    }
+
+    public function storeReply(Request $request, $question_id){
+        $this->validate($request, [
+            'reply' => 'required|string',
+        ]);
+
+        $reply = new Reply();
+        $reply->question_id = $question_id;
+        $reply->user_id = Auth::user()->id;
+        $reply->reply = $request->reply;
+
+        $reply->save();
+
+        return redirect(route('showQuestion'));
 
     }
 
@@ -35,11 +54,20 @@ class DiscussionSectionController extends Controller
 
         if (Auth::user()->role == 'farmer' || Auth::user()->role == 'expert'){
             $questions = Question::all();
-            return view('discussion',['questions' => $questions]);
+            $injectedQuestions = [];
+            foreach ($questions as $question) {
+                $question->reply = Reply::where('question_id', $question->id)->orderBy('created_at')->get();
+                array_push($injectedQuestions, $question);
+            }
+            return view('discussion',['questions' => $injectedQuestions]);
         }
 
         else
             return view('home');
+    }
+
+    public function updateQuestion(Request $request) {
+        return redirect(route('showQuestion'));
     }
 
 }

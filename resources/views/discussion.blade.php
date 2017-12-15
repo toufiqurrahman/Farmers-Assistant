@@ -3,7 +3,6 @@
 @section('content')
 
     <div class="container">
-        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
         <div class="row">
             <!-- Contenedor Principal -->
 
@@ -11,8 +10,8 @@
                 <h1>Discussion Section</h1>
                 <hr>
 
-                @if(\Illuminate\Support\Facades\Auth::user()->role == 'farmer')
-                    <form class="form-horizontal" method="POST" action="{{ url('/home/question')}}">
+                @if(Auth::user()->role == 'farmer')
+                    <form class="form-horizontal" method="POST" action="{{ route('storeQuestion')}}">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('question') ? ' has-error' : '' }}">
@@ -23,8 +22,8 @@
 
                                 @if ($errors->has('question'))
                                     <span class="help-block">
-                                            <strong>{{ $errors->first('question') }}</strong>
-                                        </span>
+                                        <strong>{{ $errors->first('question') }}</strong>
+                                    </span>
                                 @endif
                             </div>
                         </div>
@@ -39,139 +38,110 @@
                     </form>
                 @endif
 
-                @if(\Illuminate\Support\Facades\Auth::user()->role == 'farmer')
+                @foreach($questions as $question)
                     <ul id="comments-list" class="comments-list">
                         <li>
                             <div class="comment-main-level">
 
                                 <div class="comment-box">
                                     <div class="comment-head">
-                                        <h6 class="comment-name by-author"><a href="">আব্দুর রহিম</a></h6>
-                                        <span>hace 20 minutos</span>
+                                        <h6 class="comment-name by-author"><a href="">{{$question->user->name}}</a></h6>
+                                        <span>{{$question->created_at->diffForHumans()}}</span>
                                     </div>
                                     <div class="comment-content">
-                                        আমি একজন ধান চাষি। আমার ক্ষেতে ধানের খোলে প্রথমে গোলাকার ও লম্বাটে ধরণের ধূসর রঙের জলছাপের মতো দাগ পড়ে এবং তা আস্তে আস্তে বড় হয়ে উপরের দিকে সমস্ত খোলে ও পাতায় ছড়িয়ে পড়ে। এখন আমার করণীয় কী?
+                                        {{$question->question}}
                                         <br>
                                         <div class="form-group">
-                                            <div >
-                                                <button type="submit" class="btn btn-primary">
-                                                    Edit
+                                            @if(Auth::user()->id == $question->user_id)
+                                                <button type="submit" class="btn btn-primary"
+                                                        data-toggle="modal" data-target="#myModal"
+                                                        data-field-id="{{ $question->id }}"
+                                                        data-field-val="{{ $question->question }}"
+                                                        onclick="editQuestion(this)">
+                                                    <span>Edit</span>
                                                 </button>
-                                            </div>
+                                            @endif
                                         </div>
-
                                     </div>
 
                                 </div>
                             </div>
                         </li>
                     </ul>
-                @elseif(\Illuminate\Support\Facades\Auth::user()->role == 'expert')
-                        <ul id="comments-list" class="comments-list">
+                    <ul id="comments-list" class="comments-list">
+                        <li>
+                            <form class="form-horizontal" method="POST" action="{{ route('storeReply', $question->id)  }}">
+                                {{ csrf_field() }}
+
+                                <div class="form-group{{ $errors->has('reply') ? ' has-error' : '' }}">
+
+                                    <div class="col-md-9" style="margin-left: 85px">
+                                        <input type="text" class="form-control" id="reply" name="reply" class="form-control" placeholder="Reply the question" value="{{ old('reply') }}" required autofocus></input>
+
+                                        @if ($errors->has('reply'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('reply') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-left: 680px;position: relative;bottom: 51px">
+                                    <div >
+                                        <button type="submit" class="btn btn-primary">
+                                            Post
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </li>
+                    </ul>
+                    @foreach($question->reply as $reply)
+                        <ul class="comments-list reply-list">
                             <li>
-                                <div class="comment-main-level">
-
-                                    <div class="comment-box">
-                                        <div class="comment-head">
-                                            <h6 class="comment-name by-author"><a href="">আব্দুর রহিম</a></h6>
-                                            <span>hace 20 minutos</span>
-                                        </div>
-                                        <div class="comment-content">
-                                            আমি একজন ধান চাষি। আমার ক্ষেতে ধানের খোলে প্রথমে গোলাকার ও লম্বাটে ধরণের ধূসর রঙের জলছাপের মতো দাগ পড়ে এবং তা আস্তে আস্তে বড় হয়ে উপরের দিকে সমস্ত খোলে ও পাতায় ছড়িয়ে পড়ে। এখন আমার করণীয় কী?
-                                            <br>
+                                <div class="comment-box">
+                                    <div class="comment-head">
+                                        <h6 class="comment-name by-replier"><a href="">{{ $reply->user->name  }}</a></h6>
+                                        <span>{{$reply->updated_at->diffForHumans() }}</span>
+                                    </div>
+                                    <div class="comment-content">
+                                        {{ $reply->reply }}
+                                        <br>
+                                        @if(Auth::user()->id == $reply->user_id)
                                             <div class="form-group">
-                                                <div >
-                                                    <button type="submit" class="btn btn-primary">
-                                                        Reply
-                                                    </button>
-                                                </div>
+                                                <button type="button" class="btn btn-primary"
+                                                        data-toggle="modal" data-target="#myModal"
+                                                        data-field-id="{{ $reply->id }}"
+                                                        data-field-val="{{ $reply->reply }}"
+                                                        onclick="editReply(this)">
+                                                    <span>Edit</span>
+                                                </button>
                                             </div>
-
-                                        </div>
-
+                                        @endif
                                     </div>
                                 </div>
                             </li>
                         </ul>
-                @endif
-
-                @if(\Illuminate\Support\Facades\Auth::user()->role == 'expert')
-                    <ul class="comments-list reply-list">
-                        <li>
-                            <div class="comment-box">
-                                <div class="comment-head">
-                                    <h6 class="comment-name by-replier"><a href="">রওশন কবীর</a></h6>
-                                    <span>{{ \Carbon\Carbon::now()->subDays(5)->diffForHumans()}}</span>
-                                </div>
-                                <div class="comment-content">
-                                    জমির পানি শুকিয়ে পরে আবার সেচ দিন। জমিতে সুষম মাত্রায় সার প্রয়োগ করুন।
-                                    <br>
-                                    <div class="form-group">
-                                        <div >
-                                            <button type="submit" class="btn btn-primary">
-                                                Edit
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                    @elseif(\Illuminate\Support\Facades\Auth::user()->role == 'farmer')
-                    <ul class="comments-list reply-list">
-                        <li>
-                            <div class="comment-box">
-                                <div class="comment-head">
-                                    <h6 class="comment-name by-replier"><a href="">রওশন কবীর</a></h6>
-                                    <span>{{ \Carbon\Carbon::now()->subDays(5)->diffForHumans()}}</span>
-                                </div>
-                                <div class="comment-content">
-                                    জমির পানি শুকিয়ে পরে আবার সেচ দিন। জমিতে সুষম মাত্রায় সার প্রয়োগ করুন।
-                                    <br>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                @endif
-
-                                {{--<li>--}}
-                                    {{--<!-- Avatar -->--}}
-                                     {{--<!-- Contenedor del Comentario -->--}}
-                                    {{--<div class="comment-box">--}}
-                                        {{--<div class="comment-head">--}}
-                                            {{--<h6 class="comment-name by-replier"><a href="">রওশন কবীর</a></h6>--}}
-                                            {{--<span>hace 10 minutos</span>--}}
-                                        {{--</div>--}}
-                                        {{--<div class="comment-content">--}}
-                                            {{--রোগাক্রান্ত জমির ধান কাঁটার পর বছরে অন্তত একবার নাড়া জমিতে পুড়িয়ে ফেলুন এবং শুধু ধান না করে অন্যান্য ফসলের চাষ করুন।--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                {{--</li>--}}
-                            {{--</ul>--}}
-                        {{--</li>--}}
-
-                        {{--<li>--}}
-                            {{--<div class="comment-main-level">--}}
-                                {{--<!-- Avatar -->--}}
-                                {{--<!-- Contenedor del Comentario -->--}}
-                                {{--<div class="comment-box">--}}
-                                    {{--<div class="comment-head">--}}
-                                        {{--<h6 class="comment-name by-author"><a href="http://creaticode.com/blog">আব্দুর রহিম</a></h6>--}}
-                                        {{--<span>hace 10 minutos</span>--}}
-                                    {{--</div>--}}
-                                    {{--<div class="comment-content">--}}
-                                        {{--আপনার গুরুত্বপূর্ণ পরামর্শের জন্য ধন্যবাদ।--}}
-                                        {{--<br>--}}
-                                        {{--<button type="button" class="btn btn-primary" >Reply</button>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                            {{--</div>--}}
-                        {{--</li>--}}
-                    {{--</ul>--}}
-
+                    @endforeach
+                @endforeach
+            </div>
+            <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 id="modal_header" class="modal-title">Modal Header</h4>
+                        </div>
+                        <div class="modal-body">
+                            <textarea id="modal_body" style="width: 100%;"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button onclick="save()" type="button" class="btn btn-default" data-dismiss="modal">Save</button>
+                        </div>
+                    </div>
 
                 </div>
-
+            </div>
         </div>
     </div>
 @endsection
@@ -462,3 +432,42 @@
     </style>
 
 @endsection()
+
+@section('script')
+    <script>
+        $.ajaxSetup({
+            headers: {'X-CSRF-Token': $('meta[name="_token"]').attr('content')}
+        });
+        let editing = 'question', id = null;
+        function editQuestion(button) {
+            editing = 'question';
+            $('#modal_header').html("Edit Question");
+            id = $(button).data('field-id');
+            const question = $(button).data('field-val');
+            $('#modal_body').text(question);
+        }
+        function editReply(button) {
+            editing = 'reply';
+            $('#modal_header').html("Edit Reply");
+            id = $(button).data('field-id');
+            const reply = $(button).data('field-val');
+            $('#modal_body').text(reply);
+        }
+        function save() {
+            const val = $('#modal_body').val();
+            {{--$.ajax({--}}
+                {{--type: "PUT",--}}
+                {{--url: '{{ route('updateQuestion') }}',--}}
+                {{--data: {--}}
+                    {{--id: id,--}}
+                    {{--val: val,--}}
+                    {{--editing: editing--}}
+                {{--},--}}
+                {{--success: () => { alert('hello') }--}}
+            {{--});--}}
+            $.post('{{ URL::route('updateQuestion')  }}', {}, function(){
+               console.log('ok');
+            });
+        }
+    </script>
+@endsection

@@ -8,7 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Farmers' Assistant</title>
 
-        <!-- CSS -->
+		<!-- CSS -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,600">        
         <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
         <link rel="stylesheet" href="assets/font-awesome/css/font-awesome.min.css">
@@ -58,7 +58,6 @@
 						<li><a class="scroll-link" href="#services">Services</a></li>
 						<li><a class="scroll-link" href="#portfolio">Portfolio</a></li>
 						<li><a class="scroll-link" href="#testimonials">Team</a></li>
-						{{--<li><a class="scroll-link" href="#blog">Forum</a></li>--}}
 						<li><a class="scroll-link" href="#footer">Contact</a></li>
 					</ul>
 
@@ -72,7 +71,7 @@
 							{{--<li><a href="#"><i class="fa fa-trash-o fa-fw"></i> Delete</a></li>--}}
 							{{--<li><a href="#"><i class="fa fa-ban fa-fw"></i> Ban</a></li>--}}
 							{{--<li class="divider"></li>--}}
-							{{--<li><a href="#"><i class="fa fa-unlock"></i> Make admin</a></li>--}}
+					{{--<li><a href="#"><i class="fa fa-unlock"></i> Make admin</a></li>--}}
 					{{--<li><a href="#"><i class="fa fa-sign-out"></i> Sign Out</a></li>--}}
 					{{--</ul>--}}
 					{{--</div>--}}
@@ -83,7 +82,7 @@
 						<a class="scroll-link" href="#top-content"><i class="fa fa-twitter"></i></a>
 						<a class="scroll-link" href="#top-content"><i class="fa fa-instagram"></i></a>
 						<a class="scroll-link" href="#top-content"><i class="fa fa-pinterest"></i></a>
-						<a href="{{ route('login') }}"><i class="fa fa-sign-in"></i></a>
+						<a href="{{ route('login') }}"><button class="btn btn-primary" style="padding-left: 15px; padding-right: 15px;">Sign In</button></a>
 						{{--<a class="scroll-link" href="../auth/login.blade.php"><i class="fa fa-sign-in"></i></a>--}}
 
 						<!--<a class="navbar-brand brand-name" href="#"><img src="assets/img/logo_navbar.png"></a> -->

@@ -64,16 +64,16 @@ class PostsController extends Controller
                 $array = ['name' => $recipient->name, 'Role' => $post->user->name, 'type' => 'sell', 'product' => $post->interest->interest, 'amount' => $post->amount, 'price' => $post->price, 'email' => $post->user->email, 'phone' => $post->user->phone];
                 Mail::to($recipient->email)->queue(new EmailManager($array));
 
-                $body = "Hello " . $recipient->name . ",\n" .
-                    $post->user->name . " wants to sell " . $post->interest->interest . " of " .
-                    $post->amount . " kg for " . $post->price . " tk per kg.\n" .
-                    "Contact with him in below listed contacts if you want to.\n" .
-                    "Email: " . $post->user->email . "\n" .
-                    "Mobile no.: " . $post->user->phone . "\n" .
-                    "Thank You \n" .
-                    "On behalf of Farmers' Assistant";
-                $sms = new SMSManager();
-                $sms->sendSMS($recipient->phone, $body);
+//                $body = "Hello " . $recipient->name . ",\n" .
+//                    $post->user->name . " wants to sell " . $post->interest->interest . " of " .
+//                    $post->amount . " kg for " . $post->price . " tk per kg.\n" .
+//                    "Contact with him in below listed contacts if you want to.\n" .
+//                    "Email: " . $post->user->email . "\n" .
+//                    "Mobile no.: " . $post->user->phone . "\n" .
+//                    "Thank You \n" .
+//                    "On behalf of Farmers' Assistant";
+//                $sms = new SMSManager();
+//                $sms->sendSMS($recipient->phone, $body);
             }
         }
         elseif($post->user->role == 'trader') {
@@ -83,16 +83,16 @@ class PostsController extends Controller
                 $array = ['name' => $recipient->name, 'Role' => $post->user->name, 'type' => 'buy', 'product' => $post->interest->interest, 'amount' => $post->amount, 'price' => $post->price, 'email' => $post->user->email, 'phone' => $post->user->phone];
                 Mail::to($recipient->email)->queue(new EmailManager($array));
 
-                $body = "Hello " . $recipient->name . ",\n" .
-                    $post->user->name . " wants to buy " . $post->interest->interest . " of " .
-                    $post->amount . " kg for " . $post->price . " tk per kg.\n" .
-                    "Contact with him in below listed contacts if you want to.\n" .
-                    "Email: " . $post->user->email . "\n" .
-                    "Mobile no.: " . $post->user->phone . "\n" .
-                    "Thank You \n" .
-                    "On behalf of Farmers' Assistant";
-                $sms = new SMSManager();
-                $sms->sendSMS($recipient->phone, $body);
+//                $body = "Hello " . $recipient->name . ",\n" .
+//                    $post->user->name . " wants to buy " . $post->interest->interest . " of " .
+//                    $post->amount . " kg for " . $post->price . " tk per kg.\n" .
+//                    "Contact with him in below listed contacts if you want to.\n" .
+//                    "Email: " . $post->user->email . "\n" .
+//                    "Mobile no.: " . $post->user->phone . "\n" .
+//                    "Thank You \n" .
+//                    "On behalf of Farmers' Assistant";
+//                $sms = new SMSManager();
+//                $sms->sendSMS($recipient->phone, $body);
             }
         }
 

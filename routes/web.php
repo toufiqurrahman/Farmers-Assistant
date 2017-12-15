@@ -12,7 +12,7 @@
 */
 
 
-Route::get('/', 'HomeController@index');
+Route::get('/', ['uses' => 'HomeController@index']);
 
 Auth::routes();
 
@@ -27,7 +27,10 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/home/communication', 'CommunicationController@index');
 
-Route::get('/home/discussion', 'DiscussionSectionController@index');
+Route::get('/home/discussion', array('uses' => 'DiscussionSectionController@showQuestion', 'as' => 'showQuestion'));
+Route::post('/home/discussion/question', array('uses' => 'DiscussionSectionController@storeQuestion', 'as' => 'storeQuestion'));
+Route::post('/home/discussion/reply/{question_id}', array('uses' => 'DiscussionSectionController@storeReply', 'as' => 'storeReply'));
+Route::post('/home/discussion/question/update', array('uses' => 'DiscussionSectionController@updateQuestion', 'as' => 'updateQuestion'));
 
 Route::get('/home/post', 'PostsController@index');
 
@@ -61,4 +64,3 @@ Route::get('/home/my-post', 'MessageController@myPosts');
 
 Route::get('/home/delete-post', 'PostsController@destroy');
 
-Route::post('/home/question', 'DiscussionSectionController@store');

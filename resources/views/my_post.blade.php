@@ -15,6 +15,8 @@
                         </div>
                         <div class="comment-content">
                             I want to {{$type}} <b>{{$post->interest->interest}}</b> of <b>{{$post->amount}}</b> kg for <b>{{$post->price}}</b> taka per kg.
+                            <br><br>
+                            Contact with me in below listed contacts if you want to.
                             <hr>
                             <div>
                                 Email: {{$post->user->email}}
