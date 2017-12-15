@@ -46,7 +46,8 @@ class InterestController extends Controller
             $item = new Interest();
             $item->interest = $request->interest;
             $id = Interest::find($request->interest);
-            $id->delete();
+            if($id != null)
+                $id->delete();
 
             return redirect('/home/delete_interest');
     }

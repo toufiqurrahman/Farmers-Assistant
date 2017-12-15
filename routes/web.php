@@ -42,7 +42,10 @@ Route::get('/home/post/create', 'PostsController@index');
 
 Route::get('/home/add_expert', 'AddExpertController@index');
 
-Route::get('/home/delete_expert', 'AddExpertController@showDeleteExpertForm');
+Route::get('/home/delete_expert', ['uses' => 'AddExpertController@showDeleteExpertForm', 'as' => 'delete_expert']);
+
+Route::get('/home/manage_farmers', ['uses' => 'ManageUsersController@viewFarmers']);
+Route::get('/home/manage_traders', ['uses' => 'ManageUsersController@viewTraders']);
 
 Route::post('/home/post', 'PostsController@store');
 

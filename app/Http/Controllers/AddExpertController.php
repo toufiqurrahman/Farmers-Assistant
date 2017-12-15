@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 use App\Expert;
 use Illuminate\Support\Facades\Auth;
@@ -17,8 +18,9 @@ class AddExpertController extends Controller
     }
 
     public function showDeleteExpertForm(){
+        $experts = User::where('role','expert')->get();
         if(Auth::user()->role == 'admin')
-            return view('/admin/delete_expert');
+            return view('/admin/delete_expert', ['experts' => $experts]);
         else
             return view('home');
     }

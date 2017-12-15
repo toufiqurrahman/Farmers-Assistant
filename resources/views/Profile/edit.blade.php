@@ -63,19 +63,18 @@
                                             <select name="interests[]" id="multiple-checkboxes" multiple="multiple">
 
                                                 @foreach(\App\Interest::all() as $item)
+                                                    {{--@foreach(Auth::user()->interests as $interest)--}}
 
-                                                    @foreach(Auth::user()->interests as $interest)
+                                                        {{--@if($interest->interest==$item->interest)--}}
+                                                            {{--<option value="{{$item->id}}" selected>{{$item->interest}}</option>--}}
+                                                        {{--@endif--}}
 
-                                                        @if($interest->interest==$item->interest)
-                                                            <option value="{{$item->id}}" selected>{{$item->interest}}</option>
-                                                        @endif
-
-                                                    @endforeach
-
-                                                        @if($item->interest != \Illuminate\Support\Facades\Auth::user()->interest){
-                                                            <option value="{{$item->id}}">{{$item->interest}}</option>
-                                                        }
-                                                        @endif
+                                                    {{--@endforeach--}}
+                                                    @if(in_array($item->interest, $user_interests))
+                                                        <option value="{{$item->id}}" selected>{{$item->interest}}</option>
+                                                    @else
+                                                        <option value="{{$item->id}}">{{$item->interest}}</option>
+                                                    @endif
                                                 @endforeach
 
                                             </select>

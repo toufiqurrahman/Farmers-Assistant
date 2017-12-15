@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\UserInterest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,7 +18,10 @@ class ProfileController extends Controller
     }
 
     public function edit(){
-        $user = User::where('id', Auth::user()->id)->first();
-        return view('Profile/edit', ['user' => $user]);
+        $user = Auth::user();
+        $interests = [];
+        foreach ($user->interests as $interest)
+            array_push($interests, $interest->interest);
+        return view('Profile/edit', ['user' => $user, 'user_interests' => $interests]);
     }
 }

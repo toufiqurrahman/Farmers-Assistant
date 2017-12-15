@@ -273,7 +273,28 @@
                                 <a href="{{route('home')}}">
 
                                 </a>
+
                                 <li class="dropdown">
+                                    <a href="{{route('home')}}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                        Manage Users <span class="caret"></span>
+                                    </a>
+
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li>
+                                            <a href="{{url('/home/manage_farmers')}}">
+                                                Manage Farmers
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a href="{{url('/home/manage_traders')}}">
+                                                Manage Traders
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                    <li class="dropdown">
                                     <a href="{{route('home')}}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                         Manage Experts <span class="caret"></span>
                                     </a>

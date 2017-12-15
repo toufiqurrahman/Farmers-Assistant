@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class Expert extends Model
 {
     //
-    protected $table = 'interest';
+    protected $table = 'users';
 }
