@@ -18,11 +18,38 @@
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->phone }}</td>
                     <td>
-                        <button class="btn btn-danger">Delete</button>
+                        <button class="btn btn-danger"
+                                onclick="deleteUser(this)"
+                                data-field-id="{{ $user->id }}">
+                            Delete
+                        </button>
                     </td>
                 </tr>
             @endforeach
             </tbody>
         </table>
     </div>
+@endsection
+
+@section('script')
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        function deleteUser(button) {
+            const id = $(button).data('field-id');
+            $.ajax({
+                type: 'DELETE',
+                url: '/home/users/' + id,
+                success: function(data) {
+                    location.reload();
+                },
+                error: function() {
+                    console.log("Error");
+                }
+            });
+        }
+    </script>
 @endsection

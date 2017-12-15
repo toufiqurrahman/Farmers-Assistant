@@ -20,7 +20,7 @@ class AddExpertController extends Controller
     public function showDeleteExpertForm(){
         $experts = User::where('role','expert')->get();
         if(Auth::user()->role == 'admin')
-            return view('/admin/delete_expert', ['experts' => $experts]);
+            return view('manage_users', ['users' => $experts]);
         else
             return view('home');
     }

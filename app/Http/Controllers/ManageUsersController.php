@@ -16,4 +16,10 @@ class ManageUsersController extends Controller
         $users = User::where('role', 'trader')->get();
         return view('manage_users', ['users' => $users]);
     }
+
+    public function deleteUser(Request $request, $id) {
+        $user = User::find($id);
+        $user->delete();
+        return "OK";
+    }
 }

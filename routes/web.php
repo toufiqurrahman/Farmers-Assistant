@@ -46,6 +46,7 @@ Route::get('/home/delete_expert', ['uses' => 'AddExpertController@showDeleteExpe
 
 Route::get('/home/manage_farmers', ['uses' => 'ManageUsersController@viewFarmers']);
 Route::get('/home/manage_traders', ['uses' => 'ManageUsersController@viewTraders']);
+Route::delete('/home/users/{id}', ['uses' => 'ManageUsersController@deleteUser', 'as' => 'deleteUser']);
 
 Route::post('/home/post', 'PostsController@store');
 
