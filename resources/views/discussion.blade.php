@@ -102,7 +102,7 @@
                                 <div class="comment-box">
                                     <div class="comment-head">
                                         <h6 class="comment-name by-replier"><a href="">{{ $reply->user->name  }}</a></h6>
-                                        <span>{{$reply->updated_at->diffForHumans() }}</span>
+                                        <span>{{$reply->created_at->diffForHumans() }}</span>
                                     </div>
                                     <div class="comment-content">
                                         {{ $reply->reply }}
@@ -436,7 +436,9 @@
 @section('script')
     <script>
         $.ajaxSetup({
-            headers: {'X-CSRF-Token': $('meta[name="_token"]').attr('content')}
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
         });
         let editing = 'question', id = null;
         function editQuestion(button) {
@@ -455,18 +457,17 @@
         }
         function save() {
             const val = $('#modal_body').val();
-            {{--$.ajax({--}}
-                {{--type: "PUT",--}}
-                {{--url: '{{ route('updateQuestion') }}',--}}
-                {{--data: {--}}
-                    {{--id: id,--}}
-                    {{--val: val,--}}
-                    {{--editing: editing--}}
-                {{--},--}}
-                {{--success: () => { alert('hello') }--}}
-            {{--});--}}
-            $.post('{{ URL::route('updateQuestion')  }}', {}, function(){
-               console.log('ok');
+            $.ajax({
+                type: "PUT",
+                url: '{{ route('updateQuestion') }}',
+                data: {
+                    id: id,
+                    val: val,
+                    editing: editing
+                },
+                success: (data) => {
+                    location.reload();
+                }
             });
         }
     </script>

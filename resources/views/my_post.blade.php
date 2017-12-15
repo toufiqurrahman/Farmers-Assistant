@@ -10,11 +10,19 @@
 
                     <div class="comment-box" >
                         <div class="comment-head">
-                            <h6 class="comment-name {{$Role}}"><a href="">{{$post->user->name}}</a></h6>
+                            <h6 class="comment-name">
+                                <a href="">{{$post->user->name}}</a>
+                                <div class="tag-span">
+                                    {{ $post->user->role }}
+                                </div>
+                            </h6>
                             <span>{{$post->created_at->diffForHumans()}}</span>
                         </div>
                         <div class="comment-content">
-                            I want to {{$type}} <b>{{$post->interest->interest}}</b> of <b>{{$post->amount}}</b> kg for <b>{{$post->price}}</b> taka per kg.
+                            @if($post->is_expired)
+                                <img src="/assets/img/expired.jpg" alt="expired" style="float: right; width: 90px;">
+                            @endif
+                            I want to {{ $post->user->role == 'farmer' ? 'sell' : 'buy' }} <b>{{$post->interest->interest}}</b> of <b>{{$post->amount}}</b> kg for <b>{{$post->price}}</b> taka per kg.
                             <br><br>
                             Contact with me in below listed contacts if you want to.
                             <hr>
@@ -25,11 +33,19 @@
                                 Mobile No: {{$post->user->phone}}
                             </div>
                             <br>
-                            <div style="margin-right: 20px">
-                                <button type="submit" class="btn btn-success">Edit</button>
-                                <button type="submit" class="btn btn-primary">Expire</button>
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </div>
+                            @if($post->user->id == Auth::user()->id)
+                                <div style="margin-right: 20px">
+                                    @if(!$post->is_expired)
+                                        <button type="button" class="btn btn-success">Edit</button>
+                                        <button type="button" class="btn btn-primary"
+                                            data-field-id="{{ $post->id }}"
+                                            onclick="setExpire(this)">
+                                            Expire
+                                        </button>
+                                    @endif
+                                    <button type="button" class="btn btn-danger">Delete</button>
+                                </div>
+                            @endif
 
                         </div>
 
@@ -289,6 +305,19 @@
             border-radius: 3px;
         }
 
+        .tag-span{
+            background: #03658c;
+            color: #FFF;
+            font-size: 12px;
+            padding: 3px 5px;
+            font-weight: 700;
+            margin-left: 10px;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            display: inline;
+        }
+
         .comment-box .comment-name.by-replier, .comment-box .comment-name.by-replier a {color: #03658c;}
         .comment-box .comment-name.by-replier:after {
             content: 'Trader';
@@ -323,3 +352,26 @@
     </style>
 
 @endsection()
+
+@section('script')
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        function setExpire(button) {
+            const id = $(button).data('field-id');
+            $.ajax({
+                type: "PUT",
+                url: '{{ route('setExpire') }}',
+                data: {
+                    id: id
+                },
+                success: (data) => {
+                    location.reload();
+                }
+            });
+        }
+    </script>
+@endsection

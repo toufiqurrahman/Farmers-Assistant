@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Question;
 use App\Reply;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -67,7 +68,18 @@ class DiscussionSectionController extends Controller
     }
 
     public function updateQuestion(Request $request) {
-        return redirect(route('showQuestion'));
+        if ($request->editing == 'question') {
+            $question = Question::find($request->id);
+            $question->question = $request->val;
+            $question->save();
+            return "Ok";
+        }
+        else{
+            $reply = Reply::find($request->id);
+            $reply->reply = $request->val;
+            $reply->save();
+            return "OK";
+        }
     }
 
 }

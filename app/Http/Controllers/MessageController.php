@@ -11,78 +11,47 @@ class MessageController extends Controller
 {
     public function showMessage(){
 
-        if(Auth::user()->role == 'trader') {
-            $interests = Auth::user()->interests;
-            $result = array();
-            foreach ($interests as $interest){
-                $posts = Post::where('interest_id', $interest->id)->orderByDesc('updated_at')->get();
-                foreach ($posts as $post){
-                    $user = $post->user()->first();
-                    if ($user->role == 'farmer'){
-                        array_push($result, $post);
-                    }
+        $interests = Auth::user()->interests;
+        $result = array();
+        foreach ($interests as $interest){
+            $posts = Post::where('interest_id', $interest->id)->orderByDesc('updated_at')->get();
+            foreach ($posts as $post){
+                $user = $post->user()->first();
+                if ($user->role == (Auth::user()->role == 'farmer' ? 'trader' : 'farmer')){
+                    array_push($result, $post);
                 }
             }
-            return view('message',['posts' => $result, 'type'=> 'sell', 'Role'=>'by-author']);
         }
-        elseif (Auth::user()->role == 'farmer'){
-            $interests = Auth::user()->interests;
-            $result = array();
-            foreach ($interests as $interest){
-                $posts = Post::where('interest_id', $interest->id)->orderByDesc('updated_at')->get();
-                foreach ($posts as $post){
-                    $user = $post->user()->first();
-                    if ($user->role == 'trader'){
-                        array_push($result, $post);
-                    }
-                }
-            }
-            return view('message',['posts' => $result , 'type'=> 'buy', 'Role'=>'by-replier']);
-        }
-
-        else
-            return view('home');
+        return view('my_post',['posts' => $result]);
     }
 
     public function myPosts(){
 
-        if(Auth::user()->role == 'trader') {
-            $interests = Auth::user()->interests;
-            $result = array();
-            foreach ($interests as $interest){
-                $posts = Post::where('interest_id', $interest->id)->orderByDesc('updated_at')->get();
-                foreach ($posts as $post){
-                    $user = $post->user()->first();
-                    if ($user->id == Auth::user()->id){
-                        array_push($result, $post);
-                    }
+        $interests = Auth::user()->interests;
+        $result = array();
+        foreach ($interests as $interest) {
+            $posts = Post::where('interest_id', $interest->id)->orderBy('updated_at')->get();
+            foreach ($posts as $post) {
+                $user = $post->user;
+                if ($user->id == Auth::user()->id) {
+                    array_push($result, $post);
                 }
             }
-
-            return view('my_post',['posts' => $result, 'type'=> 'buy', 'Role'=>'by-replier']);
-        }
-        elseif (Auth::user()->role == 'farmer'){
-            $interests = Auth::user()->interests;
-            $result = array();
-            foreach ($interests as $interest) {
-                $posts = Post::where('interest_id', $interest->id)->orderBy('updated_at')->get();
-                foreach ($posts as $post) {
-                    $user = $post->user;
-                    if ($user->id == Auth::user()->id) {
-                        array_push($result, $post);
-                    }
-                }
-            }
-
-            return view('my_post',['posts' => $result , 'type'=> 'sell', 'Role'=>'by-author']);
         }
 
-        else
-            return view('home');
+        return view('my_post',['posts' => $result]);
     }
 
     public function update(){
 
+    }
+
+    public function setExpire(Request $request) {
+        $id = $request->id;
+        $post = Post::find($id);
+        $post->is_expired = 1;
+        $post->save();
+        return "OK";
     }
 
 }
