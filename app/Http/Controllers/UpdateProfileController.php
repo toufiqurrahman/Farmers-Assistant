@@ -18,34 +18,21 @@ class UpdateProfileController extends Controller
 
         $this->validate($request, [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
+//            'email' => 'required|string|email|max:255',
             'phone' => 'required|string|digits:11|regex:/(01)[5-9]{1}[0-9]{8}/',
 //           'interests'=>'unique:interests',
         ]);
 
-        $user = User::where('id', Auth::user()->id)->first();
+        $user = User::find(Auth::user()->id);
         $user->name = $request->name;
         $user->phone = $request->phone;
-        if($user->email==$request->email){
-            $user->save();
-        }
-        else {
-            $flag = 0;
-            $users = User::all();
-            foreach ($users as $item) {
-                if ($item->email == $request->email) {
-                    $flag=1;
-                }
-            }
-            if ($flag==0){
-                $user->email = $request->email;
-                $user->save();
-            }
 
+        if($user->role == 'farmer' || $user->role == 'trader') {
+            $user->interests()->detach(Auth::user()->interests);
+            $user->interests()->attach($request->interests);
         }
 
-        $user->interests()->detach(Auth::user()->interests);
-        $user->interests()->attach($request->interests);
+        $user->save();
 
         return redirect('/home/profile');
     }

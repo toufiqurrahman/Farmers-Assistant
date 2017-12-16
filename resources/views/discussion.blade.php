@@ -53,7 +53,7 @@
                                         <br>
                                         <div class="form-group">
                                             @if(Auth::user()->id == $question->user_id)
-                                                <button type="submit" class="btn btn-primary"
+                                                <button type="submit" class="btn btn-primary" style="float: right;"
                                                         data-toggle="modal" data-target="#myModal"
                                                         data-field-id="{{ $question->id }}"
                                                         data-field-val="{{ $question->question }}"
@@ -109,7 +109,7 @@
                                         <br>
                                         @if(Auth::user()->id == $reply->user_id)
                                             <div class="form-group">
-                                                <button type="button" class="btn btn-primary"
+                                                <button type="button" class="btn btn-primary" style="float: right; display: block"
                                                         data-toggle="modal" data-target="#myModal"
                                                         data-field-id="{{ $reply->id }}"
                                                         data-field-val="{{ $reply->reply }}"
@@ -382,6 +382,7 @@
     -webkit-border-radius: 0 0 4px 4px;
     -moz-border-radius: 0 0 4px 4px;
     border-radius: 0 0 4px 4px;
+    padding-bottom: 30px;
     }
 
     .comment-box .comment-name.by-author, .comment-box .comment-name.by-author a {color: #03658c;}
@@ -466,7 +467,17 @@
                     editing: editing
                 },
                 success: (data) => {
-                    location.reload();
+                    BootstrapDialog.show({
+                        title: 'Success!',
+                        message: 'Your ' + editing + ' has been successfully updated.',
+                        buttons: [{
+                            label: 'Close',
+                            action: function(dialog) {
+                                dialog.close();
+                                location.reload();
+                            }
+                        }]
+                    });
                 }
             });
         }

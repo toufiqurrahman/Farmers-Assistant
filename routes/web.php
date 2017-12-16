@@ -18,14 +18,12 @@ Auth::routes();
 
 Route::post('/home/add_expert', 'AddExpertController@storeUser');
 
-Route::get('/home/profile/edit','UpdateProfileController@index');
-
 Route::post('/home/profile/edit', 'UpdateProfileController@storeBasicInformation');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-Route::get('/home/communication', 'CommunicationController@index');
+Route::get('/home/communication', ['uses' => 'CommunicationController@index', 'https']);
 
 Route::get('/home/discussion', array('uses' => 'DiscussionSectionController@showQuestion', 'as' => 'showQuestion'));
 Route::post('/home/discussion/question', array('uses' => 'DiscussionSectionController@storeQuestion', 'as' => 'storeQuestion'));
@@ -66,6 +64,8 @@ Route::get('/home/message', 'MessageController@showMessage');
 
 Route::get('/home/my-post', 'MessageController@myPosts');
 Route::put('/home/posts', ['uses' => 'MessageController@setExpire', 'as' => 'setExpire']);
+Route::put('/home/posts/edit', ['uses' => 'MessageController@update', 'as' => 'postUpdate']);
+Route::delete('/home/posts', ['uses' => 'MessageController@deletePost', 'as' => 'postDelete']);
 
 Route::get('/home/delete-post', 'PostsController@destroy');
 

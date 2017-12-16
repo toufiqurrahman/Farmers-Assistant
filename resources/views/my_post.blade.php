@@ -36,14 +36,26 @@
                             @if($post->user->id == Auth::user()->id)
                                 <div style="margin-right: 20px">
                                     @if(!$post->is_expired)
-                                        <button type="button" class="btn btn-success">Edit</button>
+                                        <button type="button" class="btn btn-success"
+                                            data-toggle="modal" data-target="#myModal"
+                                            data-field-id="{{ $post->id }}"
+                                            data-interest-id="{{ $post->interest_id }}"
+                                            data-amount="{{ $post->amount }}"
+                                            data-price="{{ $post->price }}"
+                                            onclick="editPost(this)">
+                                            Edit
+                                        </button>
                                         <button type="button" class="btn btn-primary"
                                             data-field-id="{{ $post->id }}"
                                             onclick="setExpire(this)">
                                             Expire
                                         </button>
                                     @endif
-                                    <button type="button" class="btn btn-danger">Delete</button>
+                                    <button type="button" class="btn btn-danger"
+                                        onclick="deletePost(this)"
+                                        data-field-id="{{ $post->id }}">
+                                        Delete
+                                    </button>
                                 </div>
                             @endif
 
@@ -54,8 +66,61 @@
             </div>
         </div>
     @endforeach
-@endsection
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 id="modal_header" class="modal-title">Edit Post</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" method="POST" action="{{ url('/home/post') }}">
+                        <div class="comment-post">
+                            {{csrf_field()}}
 
+                            <span class="btn-group">
+                                 <br>
+
+                                <div>
+
+                                    <label for="product" class="control-label">Product:</label>
+                                    <br>
+                                    <select disabled id="interest_id" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="margin-bottom: 10px;margin-top: 10px;" class="dropdown-menu" name="product" role="menu">
+                                        @foreach(Auth::user()->interests as $item)
+                                            <option value="{{$item->id}}">{{$item->interest}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label for="amount" class="control-label">Amount(Kg):</label>
+                                    <br>
+                                    <select id="amount" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="margin-bottom: 10px" class="dropdown-menu" name="amount" role="menu">
+                                        <option>5</option>
+                                        <option>10</option>
+                                    </select>
+                                </div>
+
+
+                                <div class="form-group" style="margin-left: 0px">
+
+                                        <label for="amount" class="control-label">Price Per Unit(Tk):</label>
+                                        <input id="price" placeholder="Price Per Unit (Tk)" type="price" class="form-control" name="price" value="{{ old('price') }}" required autofocus>
+
+                                </div>
+                            </span>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="save()" type="button" class="btn btn-default" data-dismiss="modal">Save</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+@endsection
 
 
 @section('css')
@@ -360,7 +425,9 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+        let edit_id = null;
         function setExpire(button) {
+            if(!confirm("Are you sure to expire?")) return;
             const id = $(button).data('field-id');
             $.ajax({
                 type: "PUT",
@@ -369,7 +436,75 @@
                     id: id
                 },
                 success: (data) => {
-                    location.reload();
+                    BootstrapDialog.show({
+                        title: 'Success!',
+                        message: 'Your post has been expired.',
+                        buttons: [{
+                            label: 'Close',
+                            action: function(dialog) {
+                                dialog.close();
+                                location.reload();
+                            }
+                        }]
+                    });
+                }
+            });
+        }
+        function editPost(button) {
+            edit_id = $(button).data('field-id');
+            $('#interest_id').val($(button).data('interest-id'));
+            $('#amount').val($(button).data('amount'));
+            $('#price').val($(button).data('price'));
+        }
+        function save(){
+            const interest_id = $('#interest_id').val();
+            const amount = $('#amount').val();
+            const price = $('#price').val();
+            $.ajax({
+                type: "PUT",
+                url: '{{ route('postUpdate') }}',
+                data: {
+                    id: edit_id,
+                    interest_id: interest_id,
+                    amount: amount,
+                    price: price
+                },
+                success: (data) => {
+                    BootstrapDialog.show({
+                        title: 'Success!',
+                        message: 'Your post has been successfully updated.',
+                        buttons: [{
+                            label: 'Close',
+                            action: function(dialog) {
+                                dialog.close();
+                                location.reload();
+                            }
+                        }]
+                    });
+                }
+            });
+        }
+        function deletePost(button){
+            if(!confirm("Are you sure to delete?")) return;
+            const id = $(button).data('field-id');
+            $.ajax({
+                type: "DELETE",
+                url: '{{ route('postDelete') }}',
+                data: {
+                    id: id
+                },
+                success: (data) => {
+                    BootstrapDialog.show({
+                        title: 'Success!',
+                        message: 'Your post has been successfully deleted.',
+                        buttons: [{
+                            label: 'Close',
+                            action: function(dialog) {
+                                dialog.close();
+                                location.reload();
+                            }
+                        }]
+                    });
                 }
             });
         }
