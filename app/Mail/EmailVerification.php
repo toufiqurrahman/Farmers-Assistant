@@ -32,6 +32,6 @@ class EmailVerification extends Mailable
     public function build()
     {
         return $this->view('auth.emails.activation')
-                    ->subject('Email verification for Graduate Verification System');
+                    ->subject("Email verification for Farmers'Assistant");
     }
 }

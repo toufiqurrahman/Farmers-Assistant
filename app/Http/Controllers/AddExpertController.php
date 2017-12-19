@@ -46,7 +46,7 @@ class AddExpertController extends Controller
 
         $user->save();
 
-        return redirect('/home/add_expert');
+        return redirect('/home/delete_expert');
 
     }
 

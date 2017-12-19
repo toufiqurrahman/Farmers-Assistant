@@ -178,6 +178,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         Nexmo\Laravel\NexmoServiceProvider::class,
+        Laracasts\Flash\FlashServiceProvider::class,
 
     ],
 

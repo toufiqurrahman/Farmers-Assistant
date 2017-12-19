@@ -14,7 +14,7 @@ class MessageController extends Controller
         $interests = Auth::user()->interests;
         $result = array();
         foreach ($interests as $interest){
-            $posts = Post::where('interest_id', $interest->id)->orderByDesc('updated_at')->get();
+            $posts = Post::where('interest_id', $interest->id)->orderBy('updated_at', 'desc')->get();
             foreach ($posts as $post){
                 $user = $post->user()->first();
                 if ($user->role == (Auth::user()->role == 'farmer' ? 'trader' : 'farmer')){
@@ -30,7 +30,7 @@ class MessageController extends Controller
         $interests = Auth::user()->interests;
         $result = array();
         foreach ($interests as $interest) {
-            $posts = Post::where('interest_id', $interest->id)->orderByDesc('updated_at')->get();
+            $posts = Post::where('interest_id', $interest->id)->orderBy('updated_at', 'desc')->get();
             foreach ($posts as $post) {
                 $user = $post->user;
                 if ($user->id == Auth::user()->id) {

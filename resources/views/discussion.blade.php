@@ -30,7 +30,7 @@
 
                         <div class="form-group">
                             <div class="col-md-12">
-                                <button type="submit" class="btn btn-success">
+                                <button type="submit" class="btn btn-success" style="float: right">
                                     Post
                                 </button>
                             </div>

@@ -55,5 +55,5 @@ const server = ssl
 const port = parseInt(process.env.PORT, 10) || (ssl ? 8443 : 8080);
 
 server.listen(port, function () {
-  console.log(`Server is listening on ${ssl ? 'https' : 'http'}://localhost:${port}.`);
+  console.log(`Server is listening on ${ssl ? 'https' : 'http'}://localhost:${port}`);
 });

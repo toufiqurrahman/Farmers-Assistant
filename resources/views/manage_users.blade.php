@@ -39,12 +39,23 @@
             }
         });
         function deleteUser(button) {
+            if(!confirm("Are you sure to delete?")) return;
             const id = $(button).data('field-id');
             $.ajax({
                 type: 'DELETE',
                 url: '/home/users/' + id,
                 success: function(data) {
-                    location.reload();
+                    BootstrapDialog.show({
+                        title: 'Success!',
+                        message: 'User has been successfully deleted.',
+                        buttons: [{
+                            label: 'Close',
+                            action: function (dialog) {
+                                dialog.close();
+                                location.reload();
+                            }
+                        }]
+                    })
                 },
                 error: function() {
                     console.log("Error");

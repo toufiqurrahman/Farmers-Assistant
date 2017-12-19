@@ -10,10 +10,10 @@
                     <div class="comment-box">
                         <div class="comment-head">
                             <h6 class="comment-name {{$Role}}"><a href="">{{$post->user->name}}</a></h6>
-                            <span>{{$post->created_at->diffForHumans()}}</span>
+                            <span>{{$post->updated_at->diffForHumans()}}</span>
                         </div>
                         <div class="comment-content">
-                            I want to {{$type}} <b>{{$post->interest->interest}}</b> of <b>{{$post->amount}}</b> kg for <b>{{$post->price}}</b> taka per kg.
+                            I want to {{$type}} <b>{{$post->amount}}</b> kg of <b>{{$post->interest->interest}}</b> for <b>{{$post->price}}</b> taka per kg.
                             <br><br>
                             Contact with me in below listed contacts if you want to.
                             <hr>

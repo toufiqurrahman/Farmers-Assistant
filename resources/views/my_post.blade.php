@@ -16,13 +16,13 @@
                                     {{ $post->user->role }}
                                 </div>
                             </h6>
-                            <span>{{$post->created_at->diffForHumans()}}</span>
+                            <span>{{$post->updated_at->diffForHumans()}}</span>
                         </div>
                         <div class="comment-content">
                             @if($post->is_expired)
                                 <img src="/assets/img/expired.jpg" alt="expired" style="float: right; width: 90px;">
                             @endif
-                            I want to {{ $post->user->role == 'farmer' ? 'sell' : 'buy' }} <b>{{$post->interest->interest}}</b> of <b>{{$post->amount}}</b> kg for <b>{{$post->price}}</b> taka per kg.
+                            I want to {{ $post->user->role == 'farmer' ? 'sell' : 'buy' }} <b>{{$post->amount}}</b> kg of <b>{{$post->interest->interest}}</b> for <b>{{$post->price}}</b> taka per kg.
                             <br><br>
                             Contact with me in below listed contacts if you want to.
                             <hr>

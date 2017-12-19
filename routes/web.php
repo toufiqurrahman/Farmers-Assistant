@@ -22,8 +22,7 @@ Route::post('/home/profile/edit', 'UpdateProfileController@storeBasicInformation
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-
-Route::get('/home/communication', ['uses' => 'CommunicationController@index', 'https']);
+Route::get('/home/communication', ['uses' => 'CommunicationController@index']);
 
 Route::get('/home/discussion', array('uses' => 'DiscussionSectionController@showQuestion', 'as' => 'showQuestion'));
 Route::post('/home/discussion/question', array('uses' => 'DiscussionSectionController@storeQuestion', 'as' => 'storeQuestion'));
