@@ -9,7 +9,7 @@ firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 function onGruveoEmbedAPIReady() {
   const eleById = document.getElementById.bind(document);
 
-  embed = new Gruveo.Embed('myembed', {
+  const embed = new Gruveo.Embed('myembed', {
     responsive: true,
     embedParams: {
       color: '63b2de',
@@ -18,8 +18,6 @@ function onGruveoEmbedAPIReady() {
       clientid: 'demo' // replace with your client ID
     }
   });
-  
-  window.embed = embed;
 
   const form = eleById('form');
   const codeInput = eleById('code-input');
@@ -166,4 +164,3 @@ function onGruveoEmbedAPIReady() {
     return /^@?[a-zA-Z0-9]*$/.test(codeInput.value);
   }
 }
-

@@ -3,96 +3,88 @@
 
 @section('content')
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h2 class="page-header">Real Time Communication</h2>
-
-
-                <div class="row">
-                    <div>
-                        <button class="btn btn-success" id="call-btn" style="margin-bottom: 10px">Call</button>
-                    </div>
-                    <div id="myembed"></div>
-
-              </div>
-
-            </div>
-        </div>
+    <div id='container' class="container">
+        @if(Auth::user()->role == 'farmer')
+            <h4>Available Experts</h4>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Expert Name</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach($experts as $expert)
+                    <tr>
+                        <td>{{ $expert->user->name }}</td>
+                        <td>
+                            <button class="btn btn-success" data-id="{{ $expert->user->id }}"
+                                    onclick="callExpert(this)">
+                                Request Connection
+                            </button>
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        @elseif(Auth::user()->role == 'expert')
+            <div id='expert'></div>
+        @endif
+        <iframe width="540" height="400" class='embed' id='iframe'
+                src="https://www.gruveo.com/embed/"
+                frameborder="0" allowfullscreen>
+        </iframe>
     </div>
 
 @endsection()
 
 @section('script')
     <script>
-        // This code loads the Gruveo Embed API code asynchronously.
-        {{--var tag = document.createElement("script");--}}
-        {{--tag.src = "https://www.gruveo.com/embed-api/";--}}
-        {{--var firstScriptTag = document.getElementsByTagName("script")[0];--}}
-        {{--firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);--}}
 
-        {{--// This function gets called after the API code downloads. It creates--}}
-        {{--// the actual Gruveo embed and passes parameters to it.--}}
-        {{--var embed;--}}
-        {{--function onGruveoEmbedAPIReady() {--}}
-            {{--embed = new Gruveo.Embed("myembed", {--}}
-                {{--responsive: 1,--}}
-                {{--embedParams: {--}}
-                    {{--code: "{{Auth::user()->name}}"--}}
-                {{--}--}}
-            {{--});--}}
-        {{--}--}}
+        var pastCode = null;
 
-        var clientId = "demo";
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        function callExpert(button) {
+            const expert_id = $(button).data('id');
+            $.ajax({
+                type: "GET",
+                url: '/public/home/gruveo/' + expert_id,
+                success: (gruveoKey) => {
+                    document.getElementById('iframe').setAttribute('src', 'https://www.gruveo.com/embed/?code=' + gruveoKey);
+                }
+            });
+        }
+
+        function call(refresh = false) {
+            $.ajax({
+                type: "GET",
+                url: '/public/home/gruveo',
+                success: (gruveoKey) => {
+                    if(gruveoKey != pastCode) {
+                        document.getElementById('iframe').setAttribute('src', 'https://www.gruveo.com/embed/?code=' + gruveoKey);
+                        pastCode = gruveoKey;
+                        if(refresh) alert('Someone wants to connect with you');
+                    }
+                }
+            });
+        }
 
         var tag = document.createElement("script");
         tag.src = "https://www.gruveo.com/embed-api/";
         var firstScriptTag = document.getElementsByTagName("script")[0];
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-        var embed;
+        // This function gets called after the API code downloads. It creates
+        // the actual Gruveo embed and passes parameters to it.
         function onGruveoEmbedAPIReady() {
-            <?php
-                $secret = 'W62wB9JjW3tFyUMtF5QhRSbk';
-                $generated = time();
-                $hmac = hash_hmac('sha256', (string)$generated, $secret, TRUE);
-                $signature = base64_encode($hmac);
-            ?>
-
-            embed = new Gruveo.Embed("myembed", {
-                width: 1150,
-                height: 465,
-                embedParams: {
-                    clientid: clientId,
-                    color: "63b2de",
-                    branding: 0
-                }
-            });
-
-            embed
-                .on("error", onEmbedError)
-                .on("requestToSignApiAuthToken", onEmbedRequestToSignApiAuthToken)
-                .on("ready", onEmbedReady);
-        }
-
-        function onEmbedError(e) {
-            console.error("Received error " + e.error + ".");
-        }
-
-        function onEmbedRequestToSignApiAuthToken(e) {
-            var tokenHmac;
-            // ...
-            // Compute the HMAC of e.token. Do it server-side only so you don't
-            // expose your API secret in the client code!
-            // ...
-            embed.authorize(tokenHmac);
-        }
-
-        function omEmbedReady(e){
-            document.getElementById('call-btn').addEventListener("click", function(){
-                embed.call('Expert', true);
-            });
-
+            if($('#expert').length == 1)
+                call();
+            setInterval(function(){call(true)}, 30000);
         }
 
     </script>
@@ -100,9 +92,9 @@
 @endsection
 
 @section('css')
-   <style>
-    .container{
-        align-content: center;
-    }
+    <style>
+        .container{
+            align-content: center;
+        }
     </style>
 @endsection

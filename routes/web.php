@@ -20,7 +20,7 @@ Route::post('/home/add_expert', 'AddExpertController@storeUser');
 
 Route::post('/home/profile/edit', 'UpdateProfileController@storeBasicInformation');
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', ['uses' => 'HomeController@index', 'as' => 'home']);
 
 Route::get('/home/communication', ['uses' => 'CommunicationController@index']);
 
@@ -68,3 +68,6 @@ Route::delete('/home/posts', ['uses' => 'MessageController@deletePost', 'as' => 
 
 Route::get('/home/delete-post', 'PostsController@destroy');
 
+Route::get('/home/gruveo/{expert_id?}', ['uses' => 'CommunicationController@getGruveoToken', 'as' => 'gruveoToken']);
+
+Route::get('/home/send-mail/{to}/{body}', ['uses' => 'EmailController@sendMail', 'as' =>'sendMail']);

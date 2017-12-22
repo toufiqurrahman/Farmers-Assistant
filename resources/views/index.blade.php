@@ -61,20 +61,6 @@
 						<li><a class="scroll-link" href="#footer">Contact</a></li>
 					</ul>
 
-					{{--<div id="profile" class="btn-group navbar-right">--}}
-						{{--<a class="btn btn-primary" href="#"><i class="fa fa-user fa-fw"></i> User</a>--}}
-						{{--<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">--}}
-							{{--<span class="fa fa-caret-down" title="Toggle dropdown menu"></span>--}}
-						{{--</a>--}}
-						{{--<ul class="dropdown-menu">--}}
-							{{--<li><a href="#"><i class="fa fa-pencil fa-fw"></i> Profile</a></li>--}}
-							{{--<li><a href="#"><i class="fa fa-trash-o fa-fw"></i> Delete</a></li>--}}
-							{{--<li><a href="#"><i class="fa fa-ban fa-fw"></i> Ban</a></li>--}}
-							{{--<li class="divider"></li>--}}
-					{{--<li><a href="#"><i class="fa fa-unlock"></i> Make admin</a></li>--}}
-					{{--<li><a href="#"><i class="fa fa-sign-out"></i> Sign Out</a></li>--}}
-					{{--</ul>--}}
-					{{--</div>--}}
 
 					<div class="navbar-text navbar-right">
 						<a class="scroll-link" href="#top-content"><i class="fa fa-facebook"></i></a>
@@ -320,7 +306,7 @@
 	            <div class="row">
                 	<div class="col-sm-4 portfolio-box wow fadeInUp">
 	                	<div class="portfolio-box-image">
-	                		<img src="assets/img/work/paddy khet.PNG" alt="" data-at2x="assets/img/work/paddy khet.PNG">
+	                		<img src="assets/img/Work/paddy khet.PNG" alt="" data-at2x="assets/img/work/paddy_khet.png">
 	                	</div>
                 		<h3><a href="#"><span class="colored-text">Paddy Field View</span></a> <i class="fa fa-angle-right"></i></h3>
                 		<div class="portfolio-box-date"><i class="fa fa-calendar-o"></i> January 2015</div>
@@ -328,7 +314,7 @@
                     </div>
                     <div class="col-sm-4 portfolio-box wow fadeInDown">
 	                	<div class="portfolio-box-image">
-	                		<img src="assets/img/work/Ploughing.PNG" alt="" data-at2x="assets/img/work/Ploughing.PNG">
+	                		<img src="assets/img/Work/Ploughing.PNG" alt="" data-at2x="assets/img/work/Ploughing.png">
 	                	</div>
                 		<h3><a href="#"><span class="colored-text">Ploughing the Land</span></a> <i class="fa fa-angle-right"></i></h3>
                 		<div class="portfolio-box-date"><i class="fa fa-calendar-o"></i> March 2015</div>
@@ -336,7 +322,7 @@
                     </div>
                     <div class="col-sm-4 portfolio-box wow fadeInUp">
 	                	<div class="portfolio-box-image">
-	                		<img src="assets/img/work/Farmer with laptop.jpg" alt="" data-at2x="assets/img/work/Farmer with laptop.jpg">
+	                		<img src="assets/img/Work/Farmer with laptop.jpg" alt="" data-at2x="assets/img/work/Farmer_with_laptop.jpg">
 	                	</div>
                 		<h3><a href="#"><span class="colored-text">Farmer Using Farmers' Assistant</span></a> <i class="fa fa-angle-right"></i></h3>
                 		<div class="portfolio-box-date"><i class="fa fa-calendar-o"></i> August 2015</div>

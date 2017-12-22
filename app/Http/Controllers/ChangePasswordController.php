@@ -25,7 +25,8 @@ class ChangePasswordController extends Controller
         $user = Auth::user();
 
         if(!Hash::check($request->current_password,$user->password)){
-            return redirect('/home');
+            flash("Current password doesn't match");
+            return redirect('/home/change-password');
         }
 
         else
